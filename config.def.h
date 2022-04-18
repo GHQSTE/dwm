@@ -77,6 +77,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 #include "shiftview.c"
+#include "movestack.c"
 static Key keys[] = {
   /* modifier                     key              function        argument */
   { MODKEY,                       XK_z,            togglebar,      {0} },
@@ -111,6 +112,8 @@ static Key keys[] = {
   { MODKEY,                       XK_equal,        setgaps,        {.i = +1 } },
   { MODKEY|ShiftMask,             XK_equal,        setgaps,        {.i = 0  } },
   { MODKEY,                       XK_f,            togglefullscr,  {0} },
+  { MODKEY|ShiftMask,             XK_n,            movestack,      {.i = +1 } },
+  { MODKEY|ShiftMask,             XK_e,            movestack,      {.i = -1 } },
   TAGKEYS(                        XK_1,                            0)
   TAGKEYS(                        XK_2,                            1)
   TAGKEYS(                        XK_3,                            2)

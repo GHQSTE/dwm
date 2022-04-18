@@ -15,3 +15,10 @@
 7. [movestack](https://dwm.suckless.org/patches/movestack/)
 8. [focusonnetactive](https://dwm.suckless.org/patches/focusonnetactive/)
 9. [alwayscenter](https://dwm.suckless.org/patches/alwayscenter/)
+
+## Code that I have implemented from other builds
+
+- <a href="https://github.com/szatanjl/dwm/commit/1529909466206016f2101457bbf37c67195714c8">fix transparent borders</a>
+---> fixed by <a href="https://github.com/szatanjl">szatanjl</a>
+- <a href="https://github.com/LukeSmithxyz/dwm/blob/master/shiftview.c">fix shiftview behavior with scratchpads patch</a>
+---> fixed by <a href="https://github.com/dawidpotocki">dawidpotocki</a>

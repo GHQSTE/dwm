@@ -18,6 +18,22 @@ static char *colors[][3] = {
        [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
+typedef struct {
+  const char *name;
+  const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf-ueberzug", NULL };
+const char *spcmd3[] = {"st", "-n", "spalsamixer", "-g", "144x41", "-e", "alsamixer", NULL };
+const char *spcmd4[] = {"st", "-n", "spmp", "-g", "144x41", "-e", "ncmpcpp", NULL };
+static Sp scratchpads[] = {
+  /* name          cmd  */
+  {"spterm",       spcmd1},
+  {"spfm",         spcmd2},
+  {"spalsamixer",  spcmd3},
+  {"spmp",         spcmd4},
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -26,9 +42,13 @@ static const Rule rules[] = {
    *	WM_CLASS(STRING) = instance, class
    *	WM_NAME(STRING) = title
    */
-  /* class      instance    title       tags mask     isfloating   monitor */
-  { "Gimp",     NULL,       NULL,       0,            1,           -1 },
-  { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+  /* class      instance       title       tags mask     isfloating   monitor */
+  { "Gimp",     NULL,          NULL,       0,            1,           -1 },
+  { "Firefox",  NULL,          NULL,       1 << 8,       0,           -1 },
+  { NULL,       "spterm",      NULL,       SPTAG(0),     1,           -1 },
+  { NULL,       "spfm",        NULL,       SPTAG(1),     1,           -1 },
+  { NULL,       "spalsamixer", NULL,       SPTAG(2),     1,           -1 },
+  { NULL,       "spmp",        NULL,       SPTAG(3),     1,           -1 },
 };
 
 /* layout(s) */
@@ -55,6 +75,7 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#include "shiftview.c"
 static Key keys[] = {
   /* modifier                     key              function        argument */
   { MODKEY,                       XK_z,            togglebar,      {0} },
@@ -79,6 +100,12 @@ static Key keys[] = {
   { MODKEY|ShiftMask,             XK_b,            tagmon,         {.i = -1 } },
   { MODKEY|ShiftMask,             XK_j,            tagmon,         {.i = +1 } },
   { MODKEY,                       XK_F5,           xrdb,           {.v = NULL } },
+  { MODKEY,                       XK_y,            togglescratch,  {.ui = 0 } },
+  { MODKEY,                       XK_u,            togglescratch,  {.ui = 1 } },
+  { MODKEY,                       XK_l,            togglescratch,  {.ui = 2 } },
+  { MODKEY|ShiftMask,             XK_l,            togglescratch,  {.ui = 3 } },
+  { MODKEY,                       XK_period,       shiftview,      { .i = +1 } },
+  { MODKEY,                       XK_comma,        shiftview,      { .i = -1 } },
   TAGKEYS(                        XK_1,                            0)
   TAGKEYS(                        XK_2,                            1)
   TAGKEYS(                        XK_3,                            2)
@@ -105,5 +132,7 @@ static Button buttons[] = {
   { ClkTagBar,            0,               Button3,        toggleview,     {0} },
   { ClkTagBar,            MODKEY,          Button1,        tag,            {0} },
   { ClkTagBar,            MODKEY,          Button3,        toggletag,      {0} },
+  { ClkTagBar,            0,               Button4,        shiftview,      { .i = -1 } },
+  { ClkTagBar,            0,               Button5,        shiftview,      { .i = +1 } },
 };
 
